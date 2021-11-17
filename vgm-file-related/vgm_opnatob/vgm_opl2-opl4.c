@@ -80,14 +80,15 @@ int run(char *fileName)
 	//memset(&fileBuffer[0x60], (*(int*)(fileBuffer+0x50)), 4);
 	memset(&fileBuffer[0x60], 0x204CC00, 4); // hardcoded clock TODO
 	memset(&fileBuffer[0x50], 0, 4);
+	memset(&fileBuffer[0x5C], 0, 4);
 	
 	// write header of new file from 0x00 to 0x80
 	
 	// keep note of the new file write size - every command will need 1 extra byte
 	// since it needs to define port numbers for the second byte.
-	fwrite(fileBuffer, 1, 0x80, outFile);
+	fwrite(fileBuffer, 1, 0xC0, outFile);
 	
-   curPos = &(fileBuffer[0x80]);
+   curPos = &(fileBuffer[0xC0]);
    bufEnd = &(fileBuffer[fileSize-1]);
 	
    /*Exhaustively read each VGM command*/
@@ -98,8 +99,10 @@ int run(char *fileName)
       switch(curPos[0])
       {
       case 0x5A: /*YM3812*/
+	  case 0x5E: // YMF262 Port 0
+	  case 0x5F: // YMF262 Port 1
 		fputc(0xD0, outFile);
-		fputc(0x01, outFile); // YM3812 - only port 0 is used? TODO
+		fputc((curPos[0]==0x5A || curPos[0]==0x5E)?0x00:0x01, outFile); // YM3812 - only port 0 is used? TODO
 		fputc(curPos[1], outFile);
 		fputc(curPos[2], outFile);
 		ptrInc=3;
