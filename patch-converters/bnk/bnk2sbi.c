@@ -11,7 +11,7 @@
 #include <stdint.h>
 #include <string.h>
 
-#define ARBITRARY_LIMIT 8192 /*TODO use BNK count*/
+#define ARBITRARY_LIMIT 20000 /*TODO use BNK count*/
 
 #pragma pack(1)
 
