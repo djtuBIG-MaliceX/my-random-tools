@@ -68,8 +68,8 @@ typedef struct
 
 void printUsage()
 {
-   printf("Convert .BNK instruments to OPL registers\n"
-          "Usage: <BNK file> <OP3 file>\n");
+   printf("Convert .BNK instruments to SBI patches\n"
+          "Usage: <BNK file>\n");
    exit(EXIT_SUCCESS);
 }
 
